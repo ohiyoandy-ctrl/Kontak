@@ -1,0 +1,330 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Form Input - Informasi Kontak Desa</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent:#0ea5a4;
+      --danger:#ef4444;
+      --glass: rgba(255,255,255,0.6);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#eef2f7 0%,var(--bg)100%);color:#0f172a}
+    .container{max-width:1000px;margin:36px auto;padding:20px}header{display:flex;align-items:center;gap:16px}
+.logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px}
+h1{margin:0;font-size:20px}
+p.lead{margin:6px 0 0;color:var(--muted);font-size:14px}
+
+.card{background:var(--card);border-radius:12px;padding:16px;margin-top:18px;box-shadow:0 6px 18px rgba(12,15,20,0.06)}
+
+/* form */
+form.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.input, textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef5;background:transparent}
+.col-6{grid-column:span 6}
+.col-4{grid-column:span 4}
+.col-12{grid-column:span 12}
+
+.actions{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:0;background:var(--accent);color:white;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(14,165,164,0.12)}
+.btn.danger{background:var(--danger)}
+
+/* list */
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.search{display:flex;gap:8px;align-items:center}
+.search input{padding:8px 10px;border-radius:10px;border:1px solid #e6eef5}
+
+.list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:12px}
+.contact{background:linear-gradient(180deg,var(--glass),rgba(255,255,255,0.9));border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;border:1px solid rgba(15,23,42,0.03)}
+.avatar{width:64px;height:64px;border-radius:10px;background:#e6eef5;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0f172a}
+.meta{flex:1}
+.meta h3{margin:0;font-size:16px}
+.meta p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.meta small{display:block;color:var(--muted);margin-top:8px}
+.icons{display:flex;gap:8px}
+.icon-btn{width:38px;height:38px;border-radius:10px;border:0;background:transparent;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.icon-btn.edit{background:rgba(15,23,42,0.04)}
+.icon-btn.delete{background:rgba(239,68,68,0.08)}
+
+footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:none;align-items:center;justify-content:center;padding:20px}
+.modal{background:var(--card);border-radius:12px;max-width:680px;width:100%;padding:18px}
+
+@media (max-width:640px){.col-6{grid-column:span 12}.col-4{grid-column:span 12}}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">DESA</div>
+      <div>
+        <h1>Form Input - Informasi Kontak Perangkat Desa</h1>
+        <p class="lead">Tambah data kontak yang bisa dihubungi. Data tersimpan permanen di perangkat Anda (localStorage).</p>
+      </div>
+    </header><section class="card" aria-label="form input kontak">
+  <form id="contactForm" class="grid" onsubmit="return false">
+    <div class="col-6">
+      <label for="name">Nama Lengkap</label>
+      <input id="name" class="input" placeholder="Nama perangkat atau instansi" required />
+    </div>
+    <div class="col-6">
+      <label for="position">Jabatan</label>
+      <input id="position" class="input" placeholder="Contoh: Kepala Desa / Sekretaris" />
+    </div>
+    <div class="col-6">
+      <label for="phone">Nomor Telepon / WA</label>
+      <input id="phone" class="input" placeholder="0812xxxx" />
+    </div>
+    <div class="col-6">
+      <label for="email">Email (opsional)</label>
+      <input id="email" class="input" placeholder="email@desa.id" />
+    </div>
+    <div class="col-12">
+      <label for="address">Alamat / Unit</label>
+      <input id="address" class="input" placeholder="Alamat kantor atau unit layanan" />
+    </div>
+    <div class="col-6">
+      <label for="hours">Jam Layanan</label>
+      <input id="hours" class="input" placeholder="Contoh: Senin-Jumat 08:00-15:00" />
+    </div>
+    <div class="col-6">
+      <label for="notes">Catatan</label>
+      <input id="notes" class="input" placeholder="Catatan singkat, mis. sumber layanan" />
+    </div>
+
+    <div class="col-12 actions" style="margin-top:8px">
+      <button id="addBtn" class="btn" title="Tambah data"> 
+        <!-- plus icon -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tambah Data
+      </button>
+      <button id="clearAll" class="btn ghost" type="button">Bersihkan Semua</button>
+      <div style="margin-left:auto;color:var(--muted);font-size:13px">Total: <span id="total">0</span></div>
+    </div>
+  </form>
+
+  <div class="toolbar">
+    <div class="search">
+      <input id="q" placeholder="Cari nama, jabatan, telepon..." />
+      <button id="searchBtn" class="btn ghost" style="padding:8px 10px">Cari</button>
+    </div>
+    <div>
+      <button id="exportBtn" class="btn ghost">Ekspor JSON</button>
+      <button id="importBtn" class="btn ghost">Impor JSON</button>
+      <input id="fileInput" type="file" accept="application/json" style="display:none" />
+    </div>
+  </div>
+
+  <div id="list" class="list" aria-live="polite"></div>
+
+  <footer>
+    Tip: Data disimpan di browser (localStorage). Tombol hapus permanen akan menghapus data dari perangkat Anda.
+  </footer>
+</section>
+
+  </div>  <!-- modal for edit -->  <div id="modal" class="modal-backdrop">
+    <div class="modal">
+      <h3 id="modalTitle">Edit Kontak</h3>
+      <form id="editForm" class="grid" onsubmit="return false">
+        <input type="hidden" id="editId" />
+        <div class="col-12"><label>Nama</label><input id="e_name" class="input" required /></div>
+        <div class="col-6"><label>Jabatan</label><input id="e_position" class="input" /></div>
+        <div class="col-6"><label>Telepon</label><input id="e_phone" class="input" /></div>
+        <div class="col-6"><label>Email</label><input id="e_email" class="input" /></div>
+        <div class="col-6"><label>Jam Layanan</label><input id="e_hours" class="input" /></div>
+        <div class="col-12"><label>Alamat</label><input id="e_address" class="input" /></div>
+        <div class="col-12 actions" style="margin-top:8px">
+          <button id="saveEdit" class="btn">Simpan Perubahan</button>
+          <button id="cancelEdit" class="btn ghost" type="button">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>  <script>
+    // Storage key
+    const STORAGE_KEY = 'desa_kontak_v1';
+
+    // Elements
+    const addBtn = document.getElementById('addBtn');
+    const clearAll = document.getElementById('clearAll');
+    const listEl = document.getElementById('list');
+    const totalEl = document.getElementById('total');
+    const qInput = document.getElementById('q');
+    const searchBtn = document.getElementById('searchBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const importBtn = document.getElementById('importBtn');
+    const fileInput = document.getElementById('fileInput');
+
+    // form inputs
+    const inputs = ['name','position','phone','email','address','hours','notes'].reduce((o,id)=>{o[id]=document.getElementById(id);return o},{})
+
+    // modal inputs
+    const modal = document.getElementById('modal');
+    const editForm = document.getElementById('editForm');
+
+    // utilities
+    function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+
+    function load(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw? JSON.parse(raw): [];
+      }catch(e){console.error(e); return []}
+    }
+    function save(data){localStorage.setItem(STORAGE_KEY, JSON.stringify(data))}
+
+    // render
+    function render(list){
+      listEl.innerHTML='';
+      if(!list.length){listEl.innerHTML='<div style="color:var(--muted);padding:18px;border-radius:8px;background:linear-gradient(180deg,#fff, #fbfdff);text-align:center">Belum ada data kontak. Tambah menggunakan form di atas.</div>'}
+      list.forEach(item=>{
+        const el = document.createElement('div'); el.className='contact';
+        const avatar = document.createElement('div'); avatar.className='avatar'; avatar.textContent = initials(item.name);
+        const meta = document.createElement('div'); meta.className='meta';
+        const h = document.createElement('h3'); h.textContent = item.name || '-';
+        const p = document.createElement('p'); p.textContent = item.position || '';
+        const small = document.createElement('small'); small.innerHTML = [item.phone?('📞 '+item.phone):'', item.email?('✉️ '+item.email):'', item.hours?('⏰ '+item.hours):''].filter(Boolean).join(' • ');
+        const addr = document.createElement('div'); addr.style.marginTop='8px'; addr.style.fontSize='13px'; addr.style.color='var(--muted)'; addr.textContent = item.address || '';
+        meta.appendChild(h); meta.appendChild(p); meta.appendChild(small); meta.appendChild(addr);
+
+        const icons = document.createElement('div'); icons.className='icons';
+        const editBtn = document.createElement('button'); editBtn.className='icon-btn edit'; editBtn.title='Edit'; editBtn.innerHTML = svgIcon('edit');
+        const delBtn = document.createElement('button'); delBtn.className='icon-btn delete'; delBtn.title='Hapus Permanen'; delBtn.innerHTML = svgIcon('trash');
+        editBtn.onclick = ()=>openEdit(item.id);
+        delBtn.onclick = ()=>removeItem(item.id);
+        icons.appendChild(editBtn); icons.appendChild(delBtn);
+
+        el.appendChild(avatar); el.appendChild(meta); el.appendChild(icons);
+        listEl.appendChild(el);
+      });
+      totalEl.textContent = list.length;
+    }
+
+    function initials(name='-'){
+      return name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+    }
+
+    function svgIcon(type){
+      if(type==='edit') return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21v-3.75L17.81 2.44a2.5 2.5 0 0 1 3.54 0l0 0a2.5 2.5 0 0 1 0 3.54L7.5 21H3z" stroke="#0f172a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      if(type==='trash') return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18" stroke="#ef4444" stroke-width="1.6" stroke-linecap="round"/><path d="M8 6v14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="#ef4444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      return '';
+    }
+
+    // operations
+    function addItem(){
+      const data = load();
+      const item = {
+        id: uid(),
+        name: inputs.name.value.trim(),
+        position: inputs.position.value.trim(),
+        phone: inputs.phone.value.trim(),
+        email: inputs.email.value.trim(),
+        address: inputs.address.value.trim(),
+        hours: inputs.hours.value.trim(),
+        notes: inputs.notes.value.trim(),
+        created: new Date().toISOString()
+      };
+      if(!item.name){alert('Nama harus diisi'); return}
+      data.unshift(item);
+      save(data);
+      render(data);
+      document.getElementById('contactForm').reset();
+      inputs.name.focus();
+    }
+
+    function removeItem(id){
+      if(!confirm('Hapus permanen data ini? Tindakan ini tidak bisa dibatalkan.')) return;
+      let data = load();
+      data = data.filter(d=>d.id!==id);
+      save(data);
+      render(data);
+    }
+
+    function openEdit(id){
+      const data = load();
+      const item = data.find(d=>d.id===id);
+      if(!item) return alert('Data tidak ditemukan');
+      document.getElementById('editId').value = item.id;
+      document.getElementById('e_name').value = item.name;
+      document.getElementById('e_position').value = item.position;
+      document.getElementById('e_phone').value = item.phone;
+      document.getElementById('e_email').value = item.email;
+      document.getElementById('e_hours').value = item.hours;
+      document.getElementById('e_address').value = item.address;
+      modal.style.display = 'flex';
+    }
+
+    function saveEdit(){
+      const id = document.getElementById('editId').value;
+      const data = load();
+      const i = data.findIndex(d=>d.id===id);
+      if(i===-1) return alert('Data tidak ditemukan');
+      data[i].name = document.getElementById('e_name').value.trim();
+      data[i].position = document.getElementById('e_position').value.trim();
+      data[i].phone = document.getElementById('e_phone').value.trim();
+      data[i].email = document.getElementById('e_email').value.trim();
+      data[i].hours = document.getElementById('e_hours').value.trim();
+      data[i].address = document.getElementById('e_address').value.trim();
+      data[i].updated = new Date().toISOString();
+      save(data);
+      modal.style.display = 'none';
+      render(data);
+    }
+
+    function init(){
+      const data = load();
+      render(data);
+    }
+
+    // events
+    addBtn.addEventListener('click', addItem);
+    clearAll.addEventListener('click', ()=>{
+      if(!confirm('Hapus semua data kontak?')) return; localStorage.removeItem(STORAGE_KEY); render([]);
+    });
+    searchBtn.addEventListener('click', ()=>{
+      const q = qInput.value.trim().toLowerCase();
+      const data = load();
+      if(!q) return render(data);
+      render(data.filter(d=>[d.name,d.position,d.phone,d.email,d.address].join(' ').toLowerCase().includes(q)));
+    });
+
+    // modal events
+    document.getElementById('cancelEdit').addEventListener('click', ()=>modal.style.display='none');
+    document.getElementById('saveEdit').addEventListener('click', saveEdit);
+
+    // export / import
+    exportBtn.addEventListener('click', ()=>{
+      const data = load();
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'kontak-desa.json'; a.click(); URL.revokeObjectURL(url);
+    });
+    importBtn.addEventListener('click', ()=>fileInput.click());
+    fileInput.addEventListener('change', (e)=>{
+      const f = e.target.files[0]; if(!f) return;
+      const reader = new FileReader();
+      reader.onload = ev=>{
+        try{const imported = JSON.parse(ev.target.result); if(!Array.isArray(imported)) throw new Error('Format salah');
+          // merge but avoid id collision
+          const old = load();
+          const merged = [...imported, ...old];
+          save(merged);
+          render(merged);
+          alert('Impor selesai');
+        }catch(err){alert('Gagal impor: '+err.message)}
+      };
+      reader.readAsText(f);
+    });
+
+    // load at start
+    init();
+  </script></body>
+</html>
